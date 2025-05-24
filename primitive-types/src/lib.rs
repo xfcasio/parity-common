@@ -13,6 +13,7 @@
 //! rlp encoding.
 
 #![cfg_attr(not(feature = "std"), no_std)]
+#![feature(adt_const_params)]
 
 // serde_no_std leads to alloc via impl, json-schema without std requires alloc
 #[cfg(all(not(feature = "std"), any(feature = "serde_no_std", feature = "json-schema")))]
@@ -24,6 +25,7 @@ mod fp_conversion;
 mod json_schema;
 
 use core::convert::TryFrom;
+use std::marker::ConstParamTy;
 use fixed_hash::{construct_fixed_hash, impl_fixed_hash_conversions};
 #[cfg(feature = "scale-info")]
 use scale_info::TypeInfo;
@@ -39,17 +41,17 @@ pub enum Error {
 construct_uint! {
 	/// 128-bit unsigned integer.
 	#[cfg_attr(feature = "scale-info", derive(TypeInfo))]
-	pub struct U128(2);
+	#[derive(ConstParamTy)] pub struct U128(2);
 }
 construct_uint! {
 	/// 256-bit unsigned integer.
 	#[cfg_attr(feature = "scale-info", derive(TypeInfo))]
-	pub struct U256(4);
+	#[derive(ConstParamTy)] pub struct U256(4);
 }
 construct_uint! {
 	/// 512-bits unsigned integer.
 	#[cfg_attr(feature = "scale-info", derive(TypeInfo))]
-	pub struct U512(8);
+	#[derive(ConstParamTy)] pub struct U512(8);
 }
 
 construct_fixed_hash! {
